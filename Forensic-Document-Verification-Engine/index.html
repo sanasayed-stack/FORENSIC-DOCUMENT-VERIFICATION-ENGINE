@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThinkRoot x Vortex '26 | Forensic Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-cyan: #00fff2;
+            --neon-purple: #9333ea;
+        }
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #020202;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background Mesh */
+        .bg-mesh {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 15% 20%, rgba(0, 255, 242, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(147, 51, 234, 0.1) 0%, transparent 40%);
+            z-index: -1;
+            filter: blur(100px);
+            animation: pulseMesh 10s infinite alternate;
+        }
+
+        @keyframes pulseMesh {
+            0% { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.1); }
+        }
+
+        /* Glass Panel Styling */
+        .glass-panel {
+            background: rgba(15, 15, 15, 0.6);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-panel:hover {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 40px rgba(0, 255, 242, 0.1);
+        }
+
+        /* Status Tags */
+        .status-tag {
+            padding: 2px 10px;
+            border-radius: 99px;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .status-suspicious { color: #ff4d4d; border: 1px solid rgba(255, 77, 77, 0.3); background: rgba(255, 77, 77, 0.1); }
+        .status-clean { color: var(--neon-cyan); border: 1px solid rgba(0, 255, 242, 0.3); background: rgba(0, 255, 242, 0.1); }
+
+        /* Scanning Animation */
+        .scanning-bar {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+            position: absolute;
+            animation: scan 3s infinite ease-in-out;
+        }
+        @keyframes scan {
+            0% { top: 0%; opacity: 0; }
+            50% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        /* Mono Font for Terminal */
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Glow Button */
+        .btn-glow {
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+        .btn-glow:hover {
+            background: var(--neon-cyan);
+            color: black;
+            box-shadow: 0 0 25px var(--neon-cyan);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-mesh"></div>
+
+    <nav class="flex justify-between items-center px-12 py-8 relative z-50">
+        <div class="flex flex-col">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-gradient-to-br from-cyan-400 to-purple-600 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(0,255,242,0.4)]">
+                    <span class="text-black font-bold text-xl">V</span>
+                </div>
+                <div class="text-xl font-bold tracking-[0.2em] text-white">
+                    THINKROOT <span class="text-cyan-400">X</span> VORTEX'26
+                </div>
+            </div>
+            <span class="text-[9px] text-gray-500 tracking-[0.4em] uppercase mt-1 ml-11">Advanced Neural Document Forensics</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-8 text-[10px] uppercase tracking-widest text-gray-400 font-bold">
+            <a href="#" class="hover:text-cyan-400 transition flex items-center gap-2"><span>01</span> Documentation</a>
+            <a href="#" class="hover:text-cyan-400 transition flex items-center gap-2"><span>02</span> GitHub</a>
+            <button class="px-6 py-2 border border-white/10 rounded-full hover:border-cyan-400/50 transition bg-white/5">Launch App</button>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 pt-10">
+        
+        <div class="mb-16">
+            <div class="flex items-center space-x-4 mb-3">
+                <div class="h-[1px] w-8 bg-cyan-500"></div>
+                <span class="text-cyan-400 text-[10px] font-bold tracking-[0.4em] uppercase">Track C // Infrastructure</span>
+            </div>
+            <h1 class="text-6xl font-bold tracking-tighter leading-tight mb-4">
+                Forensic Document <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-blue-500 to-purple-600">Verification Engine</span>
+            </h1>
+        </div>
+
+        <div class="grid grid-cols-12 gap-6 pb-20">
+            
+            <div class="col-span-12 lg:col-span-4 glass-panel rounded-3xl p-8 flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-10">
+                        <span class="text-[10px] text-gray-500 uppercase tracking-widest">Input Stream</span>
+                        <div class="status-tag status-clean">● System Ready</div>
+                    </div>
+                    
+                    <div class="group relative border-2 border-dashed border-white/5 rounded-2xl p-12 text-center hover:border-cyan-500/40 transition-all cursor-pointer bg-white/[0.02]">
+                        <div class="scanning-bar opacity-0 group-hover:opacity-100"></div>
+                        <div class="text-5xl mb-4 group-hover:scale-110 transition duration-500">📄</div>
+                        <p class="text-sm text-gray-400 font-medium">Drop forensic sample</p>
+                        <p class="text-[10px] text-gray-600 mt-2 uppercase tracking-tighter">PDF, PNG, JPEG (MAX 10MB)</p>
+                    </div>
+                </div>
+
+                <button class="btn-glow w-full bg-transparent border border-cyan-500/50 text-cyan-400 font-bold py-4 rounded-xl mt-8 flex items-center justify-center gap-3">
+                    <span class="text-xs tracking-widest uppercase">Start Analysis</span>
+                    <span>→</span>
+                </button>
+            </div>
+
+            <div class="col-span-12 lg:col-span-5 glass-panel rounded-3xl p-4 relative flex flex-col">
+                <div class="flex justify-between items-center p-4 border-b border-white/5">
+                    <span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Metadata Visualization</span>
+                    <div class="flex gap-2">
+                        <div class="w-2 h-2 rounded-full bg-white/20"></div>
+                        <div class="w-2 h-2 rounded-full bg-white/20"></div>
+                    </div>
+                </div>
+                <div class="flex-grow flex items-center justify-center relative bg-black/20 rounded-b-2xl">
+                    <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 20px 20px;"></div>
+                    <div class="text-center group">
+                        <div class="relative w-48 h-48 mb-6 mx-auto flex items-center justify-center">
+                            <svg class="w-full h-full transform -rotate-90">
+                                <circle cx="96" cy="96" r="88" stroke="currentColor" stroke-width="4" fill="transparent" class="text-white/5" />
+                                <circle cx="96" cy="96" r="88" stroke="currentColor" stroke-width="4" fill="transparent" stroke-dasharray="552.92" stroke-dashoffset="552.92" class="text-cyan-500 transition-all duration-1000 shadow-[0_0_15px_#22d3ee]" id="circle-progress" />
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                <span class="text-4xl font-bold tracking-tighter" id="percent-text">0</span>
+                                <span class="text-[10px] text-gray-500 uppercase">Confidence</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-span-12 lg:col-span-3 space-y-6">
+                <div class="glass-panel rounded-3xl p-6 relative overflow-hidden">
+                    <div class="text-[10px] text-gray-500 uppercase tracking-widest mb-4">Integrity Verdict</div>
+                    <div class="flex items-center gap-4 mb-4">
+                        <div id="verdict-icon" class="text-2xl">⚡</div>
+                        <div id="verdict-text" class="text-2xl font-bold tracking-tighter uppercase">Waiting...</div>
+                    </div>
+                    <div class="flex items-end gap-1 h-12 w-full mt-4">
+                        <div class="bg-cyan-500/20 w-full h-1/4 rounded-t-sm hover:h-full transition-all duration-500"></div>
+                        <div class="bg-cyan-500/40 w-full h-2/4 rounded-t-sm hover:h-full transition-all duration-500"></div>
+                        <div class="bg-cyan-500/60 w-full h-3/4 rounded-t-sm hover:h-full transition-all duration-500"></div>
+                        <div class="bg-cyan-500/80 w-full h-2/4 rounded-t-sm hover:h-full transition-all duration-500"></div>
+                        <div class="bg-cyan-500 w-full h-4/4 rounded-t-sm hover:h-full transition-all duration-500 shadow-[0_0_10px_#00fff2]"></div>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-3xl p-6 h-[280px] flex flex-col">
+                    <div class="text-[10px] text-gray-500 uppercase tracking-widest mb-4 border-b border-white/5 pb-2">Analysis Log</div>
+                    <div class="flex-grow font-mono text-[10px] text-cyan-400 space-y-2 overflow-y-auto pr-2 custom-scroll">
+                        <p class="opacity-50">> [SYSTEM] INI_SEQUENCE_092...</p>
+                        <p class="opacity-80">> [AI] EXTRACTING_METADATA...</p>
+                        <p class="animate-pulse">> [WARN] ELA_VARIANCE_DETECTED</p>
+                        <p class="text-purple-400">> [OCR] REGIONAL_LANG: HI-IN</p>
+                        <p class="text-white/30">> Awaiting binary stream...</p>
+                    </div>
+                    <div class="mt-4 pt-2 border-t border-white/5 flex justify-between">
+                        <div class="status-tag status-suspicious text-[8px]">⚠ 2 Flags Found</div>
+                        <span class="text-[8px] text-gray-600 font-mono">LAT: 12ms</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="fixed bottom-0 w-full px-12 py-4 bg-black/80 backdrop-blur-xl border-t border-white/5 flex justify-between items-center text-[9px] font-mono text-gray-500 tracking-widest uppercase">
+        <div class="flex gap-10">
+            <span class="text-cyan-400">Status: Active</span>
+            <span>Kernel: V.1.0.4-LOCKED</span>
+        </div>
+        <div class="flex gap-6">
+            <a href="#" class="hover:text-white transition">Logs</a>
+            <a href="#" class="hover:text-white transition">Architecture</a>
+        </div>
+    </footer>
+
+    <script>
+        // Simple Interaction logic
+        const circle = document.getElementById('circle-progress');
+        const text = document.getElementById('percent-text');
+        
+        // Example: animate the circle on load
+        setTimeout(() => {
+            const val = 94.2;
+            const offset = 552.92 - (val / 100) * 552.92;
+            circle.style.strokeDashoffset = offset;
+            
+            // Animate text number
+            let start = 0;
+            const interval = setInterval(() => {
+                if (start >= val) {
+                    clearInterval(interval);
+                } else {
+                    start += 0.5;
+                    text.innerText = start.toFixed(1);
+                }
+            }, 10);
+        }, 500);
+        
+        // 1. Create a hidden file input
+const fileInput = document.createElement('input');
+fileInput.type = 'file';
+fileInput.accept = '.pdf, .png, .jpg, .jpeg';
+
+// 2. Target UI elements
+const startBtn = document.querySelector('.btn-glow');
+const terminal = document.querySelector('.custom-scroll');
+const percentText = document.getElementById('percent-text');
+const verdictText = document.getElementById('verdict-text');
+
+let isProcessing = false;
+
+// 3. Click handler
+startBtn.addEventListener('click', () => {
+    if (!isProcessing) {
+        fileInput.click();
+    }
+});
+
+fileInput.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    isProcessing = true;
+    startBtn.disabled = true;
+    startBtn.style.opacity = "0.5";
+    
+    // Clear previous logs
+    terminal.innerHTML = '';
+    percentText.innerText = '0';
+    verdictText.innerText = 'Processing...';
+    verdictText.classList.remove('text-red-500', 'text-green-500');
+
+    addLog(`> [SYSTEM] FILE DETECTED`);
+    addLog(`> [SYSTEM] NAME: ${file.name}`);
+    addLog(`> [SYSTEM] SIZE: ${(file.size / 1024).toFixed(2)} KB`);
+    addLog(`> [SYSTEM] CONNECTING TO BACKEND...`);
+    
+    // Call your Flask API
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    try {
+        addLog(`> [SYSTEM] SENDING TO ANALYZER...`);
+        
+        const response = await fetch('http://localhost:5000/api/analyze', { 
+            method: 'POST', 
+            body: formData 
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        console.log('API Response:', data); // Debug log
+        
+        if (data.success) {
+            addLog(`> [AI] EXTRACTING METADATA...`);
+            await sleep(400);
+            
+            addLog(`> [AI] ANALYZING PIXEL PATTERNS...`);
+            await sleep(400);
+            
+            addLog(`> [AI] CHECKING TEXT INTEGRITY...`);
+            await sleep(400);
+            
+            addLog(`> [AI] SCANNING FOR FORGERY INDICATORS...`);
+            await sleep(400);
+            
+            addLog(`> [AI] CALCULATING CONFIDENCE SCORE...`);
+            
+            // Animate the progress to the real confidence value
+            let progress = 0;
+            const targetConfidence = data.confidence;
+            const step = targetConfidence / 30; // Smooth animation over ~3 seconds
+            
+            const interval = setInterval(() => {
+                progress += step;
+                if (progress >= targetConfidence) {
+                    progress = targetConfidence;
+                    clearInterval(interval);
+                    
+                    // Show final results
+                    addLog(`> [ANALYSIS COMPLETE]`);
+                    addLog(`> [VERDICT] ${data.verdict.toUpperCase()}`);
+                    addLog(`> [CONFIDENCE] ${data.confidence}%`);
+                    addLog(`> [LEVEL] ${data.level.toUpperCase()}`);
+                    
+                    updateUI(progress, data.verdict);
+                    
+                    // Show all flags
+                    if (data.all_flags && data.all_flags.length > 0) {
+                        addLog(`> [FLAGS DETECTED] ${data.all_flags.length}`);
+                        data.all_flags.forEach((flag, idx) => {
+                            addLog(`> [FLAG ${idx + 1}] ${flag.type} - ${flag.severity}`);
+                        });
+                    }
+                    
+                    isProcessing = false;
+                    startBtn.disabled = false;
+                    startBtn.style.opacity = "1";
+                }
+                
+                percentText.innerText = progress.toFixed(1);
+                const offset = 552.92 - (progress / 100) * 552.92;
+                circle.style.strokeDashoffset = offset;
+            }, 100);
+        } else {
+            addLog(`> [ERROR] ${data.error}`);
+            isProcessing = false;
+            startBtn.disabled = false;
+            startBtn.style.opacity = "1";
+        }
+    } catch (err) {
+        console.error('Fetch Error:', err); // Debug log
+        addLog(`> [ERROR] ${err.message}`);
+        addLog(`> [ERROR] Make sure Flask is running on http://localhost:5000`);
+        verdictText.innerText = 'Connection Failed';
+        verdictText.classList.add('text-red-500');
+        isProcessing = false;
+        startBtn.disabled = false;
+        startBtn.style.opacity = "1";
+    }
+};
+
+function addLog(message) {
+    const p = document.createElement('p');
+    p.className = "animate-pulse";
+    p.innerText = message;
+    terminal.appendChild(p);
+    terminal.scrollTop = terminal.scrollHeight;
+    console.log(message); // Also log to browser console
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function updateUI(val, verdict) {
+    verdictText.innerText = verdict.toUpperCase();
+    if (verdict === "Forged" || verdict === "FORGED") {
+        verdictText.classList.add('text-red-500');
+        verdictText.classList.remove('text-green-500');
+    } else {
+        verdictText.classList.add('text-green-500');
+        verdictText.classList.remove('text-red-500');
+    }
+}
+    </script>
+</body>
+</html>
